@@ -1,20 +1,23 @@
 """
+groq_chat_model.py
+============================
+
 This module defines the GroqChatModel class, which is a wrapper around the Groq API for chat-based interactions.
-It allows users to interact with the Groq model for generating responses based on user input.
 It provides methods for initializing the model, updating the model, and managing conversation history.
 """
-import os
+# Import necessary libraries
 from litellm import model_list
-from typing import List, Dict, Any, Optional
-from langchain.schema import Document
+from typing import Dict, Any
 from langchain_groq import ChatGroq
 from langchain_core.runnables import Runnable
-import json
 
 from ..utils.logger import logger
 from ..utils.constants import DEFAULT_MODEL
 
+# Class representing a chat model using the Groq API.
 class GroqChatModel(Runnable):
+
+    # Initialize the GroqChatModel with the provided API key and model.
     def __init__(self, api_key: str, model_name: str = DEFAULT_MODEL):
         """
         Initializes the GroqChatModel with the provided API key and model.
@@ -51,6 +54,38 @@ class GroqChatModel(Runnable):
                 logger.error(f"Error updating model: {str(e)}")
                 raise e
             
-    def invoke():
-        logger.info('invoke')
+    def invoke(self, input: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Process the input and return a response.
+        
+        Args:
+            input (Dict[str, Any]): Input containing 'input' and 'history' keys
+            
+        Returns:
+            Dict[str, Any]: Response from the model
+        """
+        try:
+            # Get the input message and history
+            message = input.get('input', '')
+            history = input.get('history', [])
+            
+            # Create the chat history
+            messages = []
+            for msg in history:
+                if isinstance(msg, dict):
+                    if msg.get('type') == 'human':
+                        messages.append({"role": "user", "content": msg.get('content', '')})
+                    elif msg.get('type') == 'ai':
+                        messages.append({"role": "assistant", "content": msg.get('content', '')})
+            
+            # Add the current message
+            messages.append({"role": "user", "content": message})
+            
+            # Get response from the model
+            response = self.model.invoke(messages)
+            
+            return {"output": response.content}
+        except Exception as e:
+            logger.error(f"Error in invoke: {str(e)}")
+            raise
             
