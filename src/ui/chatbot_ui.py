@@ -51,8 +51,6 @@ class ChatbotUI:
             "chatbot_model": None,
             "file_processed": False,
             "messages": [],
-            # "vector_store": ChromaVectorStore(),
-            # "vector_store": ChromaDBStore(),
             "vector_store": None,
             "message_history": None,
         }
@@ -79,13 +77,18 @@ class ChatbotUI:
     # Render model selection in the sidebar
     # This method provides a dropdown menu for the user to select a model from the available models.
     def _render_model_selection(self):
-        st.sidebar.title("Model Selection")
-        st.sidebar.write(MODEL_SELECTION_HELP)
+        # st.sidebar.title("Model Selection")
+        # st.sidebar.write(MODEL_SELECTION_HELP)
+        
         choose_model = st.selectbox(
                 "Select GROQ Model",
                 options=list(AVAILABLE_MODELS.keys()),
                 format_func=lambda x: AVAILABLE_MODELS[x],
                 help=MODEL_SELECTION_HELP
+        )
+        # Add link to Groq's model documentation
+        st.sidebar.markdown(
+            "[View available GROQ models](https://console.groq.com/docs/models)"
         )
 
         # If "Other" is selected, show a text input
@@ -235,11 +238,6 @@ class ChatbotUI:
             
         return None
 
-
-
-
-
-
     # Render the sidebar for model selection, file upload and API key input
     def _render_sidebar(self):
         st.sidebar.title("Settings")
@@ -255,7 +253,7 @@ class ChatbotUI:
             # REnder chat history messages
             self._initialize_message_history()
 
-            # 
+            # render file upload
             self._render_file_upload()
 
         
@@ -389,6 +387,3 @@ class ChatbotUI:
 
     def render(self):
         self._initialize_ui()
-        # self._render_model_selection()
-        # self._render_file_upload()
-        # self._render_chat_interface()
