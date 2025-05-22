@@ -21,7 +21,7 @@ MODEL_SELECTION_HELP = "Choose the GROQ model to use for chat. Different models 
 
 # API key configuration
 # TODO: Remove this hardcoded API key  
-DEFAULT_GROQ_API_KEY = "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"
+DEFAULT_GROQ_API_KEY = ""
 GROQ_API_KEY_HELP = "Please enter your GROQ API key to use the chat model. Don't have one? Get it from [GROQ](https://console.groq.com/keys)."
 
 # PDF processing configuration
