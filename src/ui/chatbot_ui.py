@@ -18,11 +18,10 @@ import tempfile
 from typing import Optional, List, Dict, Any
 
 from .chatbot_message_history import StreamlitChatMessageHistory
-from ..models.groq_chat_model import GroqChatModel
-from ..vectorstore.chromadb_store import ChromaDBStore
-from ..vectorstore.chroma_store import ChromaVectorStore
-from ..utils.logger import logger
-from ..utils.constants import (
+from src.models.groq_chat_model import GroqChatModel
+from src.vectorstore.chromadb_store import ChromaDBStore
+from src.utils.logger import logger
+from src.utils.constants import (
     APP_NAME,
     DEFAULT_MODEL,
     GROQ_API_KEY_HELP,
@@ -113,9 +112,10 @@ class ChatbotUI:
                 help=GROQ_API_KEY_HELP, 
                 value=DEFAULT_GROQ_API_KEY
         )
+        
         if not api_key:
-            st.warning(GROQ_API_KEY_HELP)
-            return  
+            # st.warning(GROQ_API_KEY_HELP)
+            return None, None
         st.session_state.groq_api_key = api_key
         # Check if model has changed and initialize or update the chat model
         try:
@@ -247,8 +247,13 @@ class ChatbotUI:
             # REnder model selection
             selected_model = self._render_model_selection()
 
-            # Render API key input
+            # Render API key input            
             api_key, selected_model = self._render_api_key_input(selected_model)
+            if api_key :
+                st.session_state["groq_api_key"] = api_key
+            else:
+                st.warning("Please enter your GROQ API key in the sidebar.")
+                return
 
             # REnder chat history messages
             self._initialize_message_history()

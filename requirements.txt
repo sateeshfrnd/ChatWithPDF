@@ -1,12 +1,23 @@
-streamlit==1.45.0
+# === UI ===
+streamlit==1.31.0
+torch==2.1.0 --index-url https://download.pytorch.org/whl/cpu
+# === langchain ===
 langchain==0.3.25
 langchain-groq==0.3.2
 langchain-community==0.3.24
+langchain-huggingface==0.2.0
+# === vector store ===
 chromadb==1.0.9
 sentence-transformers==4.1.0
+# === llm ===
 pypdf==5.5.0
-langchain-huggingface==0.2.0
 litellm==1.70.0
-torch==2.2.2
 transformers==4.51.3
+# === openai ===
+openai
+# === pinecone ===
+# pinecone-client
+# === groq ===
+groq
+# === other ===
 numpy>=1.24.0
